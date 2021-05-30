@@ -186,6 +186,8 @@ document.addEventListener('DOMContentLoaded',function(){
   });
   key.addEventListener('mousedown',keydown);
   key.addEventListener('mouseup',keyup);
+  key.addEventListener('touchstart',keydown);
+  key.addEventListener('touchend',keyup);
   volumeInput.addEventListener('input',function(){
     volume=volumeInput.value;
     document.getElementById('volumeValue').innerHTML=Math.floor(volume*100)+"%";
