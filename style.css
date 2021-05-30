@@ -1,0 +1,54 @@
+body{
+  background-color:#334499;
+}
+#display{
+  background-color:black;
+  color:white;
+  font-family:consolas;
+  height:500px;
+}
+#sender{
+  text-align:center;
+  padding:30px 100px;
+}
+#key {
+  background-color:black;
+  color:white;
+  padding:20px 100px;
+  border:2px solid white;
+  margin:5px;
+  text-decoration: none;
+}
+#key:hover{
+  background-color:#111111;
+}
+
+#setting{
+  background-color:white;
+  transition: background-color 0.2s;
+}
+#setting:hover{
+  background-color:#AAFFFF;
+  transition: background-color 0.2s;
+}
+#settings{
+  background-color:#EEFFFF;
+  max-height:0px;
+  overflow:hidden;
+  transition: max-height 0.5s background-color 0.2s;
+}
+#settings:hover{
+  background-color:#CAFFFF;
+  transition: background-color 0.2s;
+}
+#settingexpand{
+  color:black;
+
+  font-family:sans-serif;
+  font-size:20px;
+  text-decoration:none;
+}
+#nowWriting_temp{
+  background-color:white;
+  color:black;
+}
