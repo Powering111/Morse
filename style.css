@@ -20,14 +20,12 @@ body{
   background-color:white;
 }
 #morseDisplay{
-  display:inline-block;
   background-color:#DDDDDD;
   margin-bottom:5px;
   padding-bottom:3px solid #222222;
   color:black;
   width:100%;
   min-height:25px;
-  position:absolute;
   top:0px;
   left:0px;
 }
