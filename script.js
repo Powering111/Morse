@@ -1,65 +1,28 @@
 var nowWriting,nowWritingTemp;
 var nowChar="", morseDisplay;
-var isUpper=true,upperCheck;
+var isUpper=true,upperCheck,isHangul=false,hangulCheck;
 var unitTimeInput, unitTime = 150;
 var d;
 var startedTime, endTime;
 var isKeying=false,isPlaying=false;
 var display, sender,key;
-var volumeInput,volume = 0.7;
+var volumeInput,volume = 0.1;
 var colorInput=new Array(4);
 var color=['#FFFFFF','#FFFF00','#FFFFFF','#000000'];
 var audioCtx=new(window.AudioContext || window.webkitAudioContext)();
 var oscillator,audioGain;
-var code={
-                ".-": "a",
-                "-...": "b",
-                "-.-.": "c",
-                "-..": "d",
-                ".": "e",
-                "..-.": "f",
-                "--.": "g",
-                "....": "h",
-                "..": "i",
-                ".---": "j",
-                "-.-": "k",
-                ".-..": "l",
-                "--": "m",
-                "-.": "n",
-                "---": "o",
-                ".--.": "p",
-                "--.-": "q",
-                ".-.": "r",
-                "...": "s",
-                "-": "t",
-                "..-": "u",
-                "...-": "v",
-                ".--": "w",
-                "-..-": "x",
-                "-.--": "y",
-                "--..": "z",
-                "-----": "0",
-                ".----": "1",
-                "..---": "2",
-                "...--": "3",
-                "....-": "4",
-                ".....": "5",
-                "-....": "6",
-                "--...": "7",
-                "---..": "8",
-                "----.": "9",
-                ".-.-.-": ".",
-                "--..--": ",",
-                "---...": ":",
-                "..--..": "?",
-                ".----.": "'",
-                "-....-": "-",
-                "-..-.": "/",
-                ".-..-.": '"',
-                ".--.-.": "@",
-                "-...-": "=",
-                "---.": "!"
-            };
+var codeEn={".-": "a","-...": "b","-.-.": "c","-..": "d",".": "e","..-.": "f","--.": "g","....": "h",
+"..": "i",".---": "j","-.-": "k",".-..": "l","--": "m","-.": "n","---": "o",".--.": "p","--.-": "q",
+".-.": "r","...": "s","-": "t","..-": "u","...-": "v",".--": "w","-..-": "x","-.--": "y","--..": "z"};
+var codeKr={
+".-..":"ㄱ","..-.":"ㄴ","-...":"ㄷ","...-":"ㄹ","--":"ㅁ",".--":"ㅂ","--.":"ㅅ","-.-":"ㅇ",".--.":"ㅈ","-.-.":"ㅊ","-..-":"ㅋ","--..":"ㅌ","---":"ㅍ",".---":"ㅎ",
+".":"ㅏ","..":"ㅑ","-":"ㅓ","...":"ㅕ",".-":"ㅗ","-.":"ㅛ","....":"ㅜ",".-.":"ㅠ","-..":"ㅡ","..-":"ㅣ","-.--":"ㅐ","--.-":"ㅔ"
+};
+var codeSn={
+  "-----": "0",".----": "1","..---": "2","...--": "3","....-": "4",".....": "5","-....": "6","--...": "7",
+  "---..": "8","----.": "9",".-.-.-": ".","--..--": ",","---...": ":","..--..": "?",".----.": "'","-....-": "-",
+  "-..-.": "/",".-..-.": '"',".--.-.": "@","-...-": "=","---.": "!"
+};
 var toUpper={"a":"A","b":"B","c":"C","d":"D","e":"E","f":"F","g":"G","h":"H","i":"I","j":"J","k":"K","l":"L","m":"M","n":"N","o":"O","p":"P","q":"Q","r":"R","s":"S","t":"T","u":"U","v":"V","w":"W","x":"X","y":"Y","z":"Z"};
 function playsound() {
   if(isPlaying==false){
@@ -84,26 +47,40 @@ function stopsound(){
 }
 function applyChar(){
   let c;
-  if(isUpper){
-    c=toUpper[code[nowChar]];
+  if(isHangul){
+    c=codeKr[nowChar]||codeSn[nowChar]||" ";
   }else{
-    c=code[nowChar];
+    if(isUpper){
+      c=toUpper[codeEn[nowChar]]||codeSn[nowChar]||" ";
+    }else{
+      c=codeEn[nowChar]||codeSn[nowChar]||" ";
+    }
   }
-  nowWriting.innerHTML += c || "";
+  nowWriting.innerHTML += c;
   nowChar="";
   nowWritingTemp.innerHTML="";
 }
 function updateChar(){
   let c;
-  if(isUpper){
-    c=toUpper[code[nowChar]];
+  if(isHangul){
+    c=codeKr[nowChar]||codeSn[nowChar]||" ";
   }else{
-    c=code[nowChar];
+    if(isUpper){
+      c=toUpper[codeEn[nowChar]]||codeSn[nowChar]||" ";
+    }else{
+      c=codeEn[nowChar]||codeSn[nowChar]||" ";
+    }
   }
-  nowWritingTemp.innerHTML=c||"";
+  nowWritingTemp.innerHTML=c;
 }
-var keyStarted= false;
 
+
+var keyStarted= false;
+function checkTime(){
+  if(keyStarted==false){
+
+  }
+}
 function keydown(){
   if(keyStarted==false){
 
@@ -156,6 +133,12 @@ function keyup(){
 function colorChanged(obj, i){
   color[i]=obj.value;
 }
+function insertDot(){
+
+}
+function insertDash(){
+
+}
 document.addEventListener('DOMContentLoaded',function(){
   display = document.getElementById("display");
   key = document.getElementById("key");
@@ -166,8 +149,20 @@ document.addEventListener('DOMContentLoaded',function(){
   nowWritingTemp = document.getElementById("nowWriting_temp");
   morseDisplay=document.getElementById("morseDisplay");
   upperCheck=document.getElementById("upper");
+  hangulCheck=document.getElementById("hangul");
   upperCheck.addEventListener('change',function(){
+    applyChar();
     isUpper=upperCheck.checked;
+  });
+  hangulCheck.addEventListener('change',function(){
+    applyChar();
+    if(hangulCheck.checked){
+      document.getElementById("upperSection").style.display='none';
+      isHangul=true;
+    }else{
+      document.getElementById("upperSection").style.display='inline-block';
+      isHangul=false;
+    }
   });
   for(var i =0;i<4;i++){
     colorInput[i]=document.getElementById("color"+(i+1));
@@ -178,11 +173,15 @@ document.addEventListener('DOMContentLoaded',function(){
   });
   window.addEventListener('keydown', (e)=>{
     if(e.key==' ')
-    keydown();
+      keydown();
+    if(e.key=='.'||e.key=='0')
+      insertDot();
   });
   window.addEventListener('keyup', (e)=>{
     if(e.key==' ')
-    keyup();
+      keyup();
+    if(e.key=='-'||e.key=='1')
+      insertDash();
   });
   key.addEventListener('mousedown',keydown);
   key.addEventListener('mouseup',keyup);
