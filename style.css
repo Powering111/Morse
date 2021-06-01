@@ -20,6 +20,7 @@ body{
   background-color:white;
 }
 #morseDisplay{
+  display:block;
   background-color:#DDDDDD;
   margin-bottom:5px;
   padding-bottom:3px solid #222222;
